@@ -12,19 +12,21 @@
 |---|---|---|
 | `karpathy-llm-wiki/` | Karpathy 的 [LLM Wiki 理念原文](https://gist.github.com/karpathy/442a6bf555914893e9891c11519de94f) | 模式定义：三层架构（raw sources / wiki / schema）、Ingest-Query-Lint 操作循环 |
 | `kimiwork-memory-prompts/` | KimiWork 记忆功能（Dream Agent）的系统提示词，提取自 Kimi 桌面端 | 同一模式的**生产级实现**：Obsidian 风格 vault、夜间巩固、dream loop |
+| `tencentdb-agent-memory-wiki/` | **TDAI**（[TencentDB-Agent-Memory](https://github.com/TencentCloud/TencentDB-Agent-Memory) 开源栈）MemoryKnowledge 服务的源码级设计方案 | 同一模式的**多租户服务端实现**：增量摄取管线、FTS5 + 图检索、事务索引 |
 
-## 两份材料的对照
+## 三份材料的对照
 
-Karpathy 的文章给出抽象模式，KimiWork 的 prompt 展示了它在工业产品里如何落地：
+Karpathy 的文章给出抽象模式，KimiWork 的 prompt 展示了它在工业产品里如何落地，TencentDB-Agent-Memory 把它做成了多租户服务端管线：
 
 - **三层架构** ↔ KimiWork 的"模型写散文 / 工具管格式 / 脚本管装配"
 - **Ingest / Query / Lint** ↔ Dream Agent 的 INGEST 阶段与 `vault_status` 体检
 - **index.md / log.md** ↔ KimiWork vault 中完全同名的脚本维护文件
 - **"LLM 是程序员，wiki 是代码库"** ↔ KimiWork 的反流水账机制（consolidated rewrite）与 NO_UPDATE 默认姿态
+- **个人 vault + 单 Agent** ↔ TDAI 的按租户摄取队列、FTS5 + wikilink 多跳检索、事务内重建索引（见 `tencentdb-agent-memory-wiki/DESIGN.md`）
 
 ## 计划
 
-- [ ] 放入自有项目的 LLM-Wiki 设计
+- [x] 放入自有项目的 LLM-Wiki 设计（`tencentdb-agent-memory-wiki/`）
 
 ## 版权说明
 
