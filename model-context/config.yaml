@@ -1,0 +1,40 @@
+# Dream Agent v14 配置 — 单一真理源
+#
+# 两层变量:
+#   roots: 部署根路径, 切环境只动这个 (sandbox / 本地 / AgentGym)
+#   paths: 实际文件路径, 用 {mount} / {ctx} 引用 roots
+#
+# v14 vault model:
+#   {VAULT_ROOT}/                # per-user vault
+#     about_user.md              # script-assembled, K2 inject target (read-only for model)
+#     index.md                   # script-generated TOC of entities (read-only)
+#     log.md                     # script-maintained dream log (read-only)
+#     sections.yaml              # assembly config (human-edited)
+#     sections/<name>.md         # model-writable section fragments
+#     entities/<Name>.md         # model-writable entity pages
+
+roots:
+  mount: /mnt                       # runtime read/write mount (vault lives here)
+  ctx: /mnt/agents/model_context    # 镜像内 model_context 安装位置
+
+paths:
+  # Vault root for the user being processed
+  VAULT_ROOT:        "{mount}/vault"
+
+  # Convenience pointers (computed from VAULT_ROOT)
+  ABOUT_USER_PATH:   "{mount}/vault/about_user.md"
+  AVATAR_PATH:       "{mount}/vault/avatar.png"
+  SECTIONS_DIR:      "{mount}/vault/sections"
+  ENTITIES_DIR:      "{mount}/vault/entities"
+  INDEX_PATH:        "{mount}/vault/index.md"
+  LOG_PATH:          "{mount}/vault/log.md"
+
+  # Spec docs (immutable inputs)
+  VALUES_PATH:       "{ctx}/values.md"
+  AVATAR_SKILL_PATH: "{ctx}/skills/about-me-avatar/SKILL.md"
+  AVATAR_BASE_PATH:  "{ctx}/skills/about-me-avatar/base.png"
+  OBSIDIAN_SKILL_PATH: "{ctx}/skills/obsidian-markdown/SKILL.md"
+
+# 运行时数据变量 (rollout runner per-dream injects)
+runtime_vars:
+  - ABOUT_ME   # avatar SKILL uses this — current assembled about_user.md content
